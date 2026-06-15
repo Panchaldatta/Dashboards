@@ -92,3 +92,16 @@ body {
 .animate-spin-slow {
   animation: spin-slow 8s linear infinite;
 }
+
+/* Slide in from right for customizer drawer */
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.animate-slide-in {
+  animation: slide-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

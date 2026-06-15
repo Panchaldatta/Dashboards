@@ -31,7 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, setIsOpen, activeTab, 
   return (
     <aside 
       className={`fixed top-0 left-0 z-40 h-screen transition-all duration-300 ease-in-out border-r 
-        ${isOpen ? 'w-64' : 'w-20'} 
+        ${isOpen ? 'w-64 translate-x-0' : 'w-20 -translate-x-full lg:translate-x-0 lg:w-20'} 
         bg-white dark:bg-zinc-950 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100`}
     >
       {/* Logo Section */}

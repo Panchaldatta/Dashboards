@@ -17,7 +17,9 @@ import {
 type ThemePreset = 'indigo' | 'emerald' | 'rose' | 'amber' | 'cyan';
 
 function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() => {
+    return window.innerWidth >= 1024; // Default to closed on mobile/tablet (<1024px)
+  });
   const [activeTab, setActiveTab] = useState('analytics');
   const [darkMode, setDarkMode] = useState(() => {
     const saved = localStorage.getItem('theme');
@@ -29,6 +31,19 @@ function App() {
   const [themePreset, setThemePreset] = useState<ThemePreset>(() => {
     return (localStorage.getItem('theme-preset') as ThemePreset) || 'indigo';
   });
+
+  // Handle window resize to adjust sidebar responsiveness
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsSidebarOpen(true);
+      } else {
+        setIsSidebarOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Dark Mode Side Effect
   useEffect(() => {
@@ -97,10 +112,18 @@ function App() {
         setActiveTab={setActiveTab} 
       />
 
+      {/* Sidebar Backdrop Overlay on Mobile */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 z-35 bg-black/40 backdrop-blur-xs lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Main Layout Container */}
       <div 
-        className={`flex flex-col min-h-screen transition-all duration-300 ease-in-out
-          ${isSidebarOpen ? 'pl-64' : 'pl-20'}`}
+        className={`flex flex-col min-h-screen transition-all duration-300 ease-in-out pl-0
+          ${isSidebarOpen ? 'lg:pl-64' : 'lg:pl-20'}`}
       >
         <Header 
           isSidebarOpen={isSidebarOpen} 
