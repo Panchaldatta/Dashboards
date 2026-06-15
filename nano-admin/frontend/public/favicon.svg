@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e293b" />
+    </linearGradient>
+    <linearGradient id="text-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+  </defs>
+  <!-- Modern Rounded Background -->
+  <rect width="32" height="32" rx="8" fill="url(#bg-grad)" />
+  <!-- Stylized Typographic N -->
+  <text x="50%" y="60%" 
+        dominant-baseline="middle" 
+        text-anchor="middle" 
+        font-family="'Outfit', 'Inter', 'Segoe UI', sans-serif" 
+        font-weight="900" 
+        font-size="18" 
+        fill="url(#text-grad)"
+        style="user-select: none;">N</text>
+</svg>
