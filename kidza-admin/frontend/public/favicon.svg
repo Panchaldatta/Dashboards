@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="kidza-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B6B" />
+      <stop offset="100%" stop-color="#FFD93D" />
+    </linearGradient>
+  </defs>
+  <!-- Playful Rounded Background -->
+  <rect width="30" height="30" x="1" y="1" rx="10" fill="url(#kidza-bg)" />
+  <rect width="26" height="26" x="3" y="3" rx="8" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="3,3" opacity="0.8" />
+  
+  <!-- Playful Cartoonish 'K' -->
+  <text x="50%" y="62%" 
+        dominant-baseline="middle" 
+        text-anchor="middle" 
+        font-family="'Fredoka', 'Quicksand', 'Comic Sans MS', sans-serif" 
+        font-weight="900" 
+        font-size="20" 
+        fill="#FFFFFF"
+        style="user-select: none; filter: drop-shadow(1px 2px 0px rgba(0,0,0,0.15));">K</text>
+</svg>
