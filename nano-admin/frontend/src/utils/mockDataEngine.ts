@@ -60,10 +60,10 @@ const defaultLeads = [
 ];
 
 const defaultProducts = [
-  { id: '1', name: 'Premium Mechanical Keyboard', price: 189, stock: 45, image: 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?q=80&w=256&auto=format&fit=crop', category: 'Accessories' },
-  { id: '2', name: 'Ultra-Wide Gaming Monitor 34"', price: 499, stock: 12, image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=256&auto=format&fit=crop', category: 'Monitors' },
-  { id: '3', name: 'Ergonomic Mesh Office Chair', price: 299, stock: 20, image: 'https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?q=80&w=256&auto=format&fit=crop', category: 'Furniture' },
-  { id: '4', name: 'Wireless Noise Cancelling Headphones', price: 249, stock: 35, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=256&auto=format&fit=crop', category: 'Audio' },
+  { id: '1', name: 'Premium Mechanical Keyboard', price: 189, stock: 45, image: 'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?q=80&w=256&auto=format&fit=crop', category: 'Hardware' },
+  { id: '2', name: 'Ultra-Wide Gaming Monitor 34"', price: 499, stock: 12, image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?q=80&w=256&auto=format&fit=crop', category: 'Hardware' },
+  { id: '3', name: 'Wireless Noise Cancelling Headphones', price: 249, stock: 35, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=256&auto=format&fit=crop', category: 'Wearables' },
+  { id: '4', name: 'Enterprise Cloud Subscription', price: 99, stock: 100, image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=256&auto=format&fit=crop', category: 'Subscriptions' },
 ];
 
 const defaultOrders = [
@@ -212,6 +212,12 @@ export const getProducts = async () => {
 export const getOrders = async () => {
   await delay(200);
   return getStorage('nano_orders', defaultOrders);
+};
+
+export const restockProducts = async () => {
+  await delay(300);
+  setStorage('nano_products', defaultProducts);
+  return defaultProducts;
 };
 
 export const buyProduct = async (productId: string, buyerName: string) => {

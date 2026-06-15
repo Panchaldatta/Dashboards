@@ -4,7 +4,7 @@ import {
   CheckCircle,
   Truck
 } from 'lucide-react';
-import { getProducts, getOrders, buyProduct } from '../utils/mockDataEngine';
+import { getProducts, getOrders, buyProduct, restockProducts } from '../utils/mockDataEngine';
 
 interface Product {
   id: string;
@@ -29,6 +29,7 @@ export const ECommerceDashboard: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [purchaseSuccess, setPurchaseSuccess] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<'All' | 'Hardware' | 'Wearables' | 'Subscriptions'>('All');
 
   const fetchData = async () => {
     try {
@@ -68,6 +69,21 @@ export const ECommerceDashboard: React.FC = () => {
     }
   };
 
+  const handleRestock = async () => {
+    try {
+      setLoading(true);
+      const updatedProducts = await restockProducts();
+      setProducts(updatedProducts as Product[]);
+      setPurchaseSuccess("All products successfully restocked!");
+      setTimeout(() => setPurchaseSuccess(null), 3000);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to restock products.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (loading && products.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
@@ -75,6 +91,10 @@ export const ECommerceDashboard: React.FC = () => {
       </div>
     );
   }
+
+  const filteredProducts = products.filter(
+    (product) => selectedCategory === 'All' || product.category === selectedCategory
+  );
 
   return (
     <div className="space-y-6">
@@ -96,9 +116,35 @@ export const ECommerceDashboard: React.FC = () => {
         
         {/* Catalog List */}
         <div className="lg:col-span-2 space-y-4">
-          <h3 className="font-bold text-base text-zinc-900 dark:text-white">Product Catalog</h3>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <h3 className="font-bold text-base text-zinc-900 dark:text-white">Product Catalog</h3>
+            <button
+              onClick={handleRestock}
+              className="px-3.5 py-1.5 bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-950 rounded-xl text-xs font-semibold shadow-sm transition-colors cursor-pointer self-start sm:self-center"
+            >
+              Restock Inventory
+            </button>
+          </div>
+
+          {/* Category Tabs */}
+          <div className="flex items-center gap-1.5 p-1 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl w-fit shadow-xs">
+            {(['All', 'Hardware', 'Wearables', 'Subscriptions'] as const).map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(cat)}
+                className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-all ${
+                  selectedCategory === cat 
+                    ? 'bg-primary-600 text-white shadow-xs' 
+                    : 'text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-200'
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {products.map((product) => (
+            {filteredProducts.map((product) => (
               <div 
                 key={product.id} 
                 className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"

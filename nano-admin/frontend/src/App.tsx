@@ -128,6 +128,8 @@ function App() {
         <Header 
           isSidebarOpen={isSidebarOpen} 
           setIsSidebarOpen={setIsSidebarOpen} 
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
           darkMode={darkMode} 
           toggleDarkMode={toggleDarkMode}
           toggleCustomizer={() => setIsCustomizerOpen(true)}

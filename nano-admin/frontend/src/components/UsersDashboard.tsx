@@ -29,6 +29,7 @@ export const UsersDashboard: React.FC = () => {
 
   // Search filter
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedRoleFilter, setSelectedRoleFilter] = useState('All');
 
   const fetchUsers = async () => {
     try {
@@ -96,10 +97,12 @@ export const UsersDashboard: React.FC = () => {
     }
   };
 
-  const filteredUsers = users.filter(user => 
-    user.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    user.email.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredUsers = users.filter(user => {
+    const matchesSearch = user.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          user.email.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesRole = selectedRoleFilter === 'All' || user.role === selectedRoleFilter;
+    return matchesSearch && matchesRole;
+  });
 
   if (loading && users.length === 0) {
     return (
@@ -201,18 +204,36 @@ export const UsersDashboard: React.FC = () => {
 
       {/* Users Table Card */}
       <div className="p-6 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-sm space-y-4">
-        {/* Search Bar */}
-        <div className="relative max-w-sm">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-zinc-400">
-            <Search size={16} />
-          </span>
-          <input
-            type="text"
-            placeholder="Search users by name or email..."
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-2 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-550 text-zinc-900 dark:text-white"
-          />
+        {/* Search Bar & Role Filters */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div className="relative max-w-sm w-full">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-zinc-400">
+              <Search size={16} />
+            </span>
+            <input
+              type="text"
+              placeholder="Search users by name or email..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              className="w-full pl-9 pr-4 py-2 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-550 text-zinc-900 dark:text-white"
+            />
+          </div>
+
+          <div className="flex items-center gap-1 p-1 bg-zinc-50/55 dark:bg-zinc-950/45 border border-zinc-200 dark:border-zinc-800/80 rounded-xl w-fit self-start md:self-auto shadow-xs">
+            {['All', 'Admin', 'Moderator', 'User'].map((roleOpt) => (
+              <button
+                key={roleOpt}
+                onClick={() => setSelectedRoleFilter(roleOpt)}
+                className={`px-3 py-1.5 text-[10px] font-bold rounded-lg transition-all cursor-pointer ${
+                  selectedRoleFilter === roleOpt
+                    ? 'bg-primary-600 text-white shadow-xs'
+                    : 'text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-100'
+                }`}
+              >
+                {roleOpt === 'All' ? 'All Roles' : roleOpt}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Table representation */}

@@ -290,6 +290,22 @@ export const CryptoDashboard: React.FC = () => {
                   required
                   className="w-full px-3 py-2 text-xs bg-zinc-50 dark:bg-zinc-950 border border-zinc-250 dark:border-zinc-800 rounded-lg focus:outline-none text-zinc-900 dark:text-white"
                 />
+                <div className="flex gap-1.5 mt-1.5 justify-start">
+                  {(['+0.01', '+0.1', '+1.0'] as const).map((preset) => (
+                    <button
+                      key={preset}
+                      type="button"
+                      onClick={() => {
+                        const val = parseFloat(tradeAmount) || 0;
+                        const add = parseFloat(preset.slice(1));
+                        setTradeAmount((val + add).toFixed(3).replace(/\.?0+$/, ''));
+                      }}
+                      className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors cursor-pointer"
+                    >
+                      {preset}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
 

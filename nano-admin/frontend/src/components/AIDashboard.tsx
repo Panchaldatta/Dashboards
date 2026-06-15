@@ -38,6 +38,30 @@ export const AIDashboard: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const handleQuickPromptClick = async (prompt: string) => {
+    if (chatLoading) return;
+    setInputMessage(prompt);
+    const timeString = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    setMessages(prev => [...prev, { sender: 'user', text: prompt, time: timeString }]);
+    setChatLoading(true);
+
+    try {
+      const response = await getAISuggestion(prompt, 'chat');
+      setMessages(prev => [...prev, { 
+        sender: 'bot', 
+        text: response.message, 
+        time: response.timestamp || timeString 
+      }]);
+      setInputMessage('');
+    } catch (err) {
+      console.error(err);
+      setMessages(prev => [...prev, { sender: 'bot', text: 'Failed to process AI query.', time: timeString }]);
+    } finally {
+      setChatLoading(false);
+    }
+  };
+
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputMessage.trim()) return;
@@ -148,6 +172,22 @@ export const AIDashboard: React.FC = () => {
               </div>
             )}
             <div ref={messagesEndRef} />
+          </div>
+
+          {/* Quick Prompts */}
+          <div className="px-6 py-2.5 border-t border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/20 dark:bg-zinc-950/10 flex flex-wrap items-center gap-2">
+            <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider">Try:</span>
+            {['Optimize loops', 'Explain dark mode', 'Generate mock SQL'].map((prompt) => (
+              <button
+                key={prompt}
+                type="button"
+                onClick={() => handleQuickPromptClick(prompt)}
+                disabled={chatLoading}
+                className="text-[11px] px-2.5 py-1 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:border-primary-500 dark:hover:border-primary-500 text-zinc-600 dark:text-zinc-350 transition-all font-medium disabled:opacity-50 cursor-pointer"
+              >
+                {prompt}
+              </button>
+            ))}
           </div>
 
           {/* Form Control */}
